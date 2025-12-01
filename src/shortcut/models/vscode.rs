@@ -14,19 +14,24 @@ pub struct VsCodeShortcutConfig {
 }
 
 impl VsCodeShortcut {
-    pub fn new(key: impl Into<String>, command: impl Into<String>, when: Option<String>) -> Self {
-         VsCodeShortcut {
-             key: key.into(),
-             command: command.into(),
-             when,
+    pub fn new(
+        key: impl Into<String>,
+        command: impl Into<String>,
+        when: Option<String>
+    ) -> Self {
+        VsCodeShortcut {
+            key: key.into(),
+            command: command.into(),
+            when,
         }
     }
-    fn from_default_shortcut(s: Shortcut) -> Self {
+    
+    pub fn from_default_shortcut(s: Shortcut) -> Self {
         VsCodeShortcut {
-            key: s.key,
-            command: s.value, 
-            when: s.optional, 
-        }   
+            key: s.keystroke,
+            command: s.action,
+            when: s.context,
+        }
     }
 }
 
@@ -36,19 +41,19 @@ impl VsCodeShortcutConfig {
             key_bindings: Vec::new(),
         }
     }
-    
-    pub fn add_shortcut(&mut self, shortcut: VsCodeShortcut){
+
+    pub fn add_shortcut(&mut self, shortcut: VsCodeShortcut) {
         self.key_bindings.push(shortcut);
     }
-    
+
     pub fn from_default_shortcut(config: ShortcutConfig) -> Self {
         let transformed_bindings = config.key_bindings
-            .into_iter()                         
+            .into_iter()
             .map(VsCodeShortcut::from_default_shortcut)
-            .collect();                          
-    
-            VsCodeShortcutConfig {
-                key_bindings: transformed_bindings,
+            .collect();
+
+        VsCodeShortcutConfig {
+            key_bindings: transformed_bindings,
         }
     }
 }
