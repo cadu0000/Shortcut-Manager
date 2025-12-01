@@ -20,3 +20,10 @@ pub fn export_to_vscode_type(json: Value) -> Value {
 
     vscode_json
 }
+
+pub fn vscode_to_default(json: Value) -> ShortcutConfig {
+    let vscode_config: VsCodeShortcutConfig = serde_json::from_value(json)
+        .expect("Falha ao desserializar JSON de volta para VsCodeShortcutConfig.");
+
+    vscode_config()
+}
