@@ -1,4 +1,5 @@
-use crate::shortcut::model::{VsCodeShortcutConfig, ShortcutConfig};
+use crate::shortcut::models::vscode::VsCodeShortcutConfig;
+use crate::shortcut::models::default::ShortcutConfig;
 use serde_json::{Value};
 use serde::Serialize;
 
@@ -9,21 +10,19 @@ pub fn generate_shortcut_config_json<T: Serialize>(shortcut_config: T) -> Value 
     json_value
 }
 
-pub fn export_to_vscode_type(json: Value) -> Value {
+pub fn default_to_vscode(json: Value) -> VsCodeShortcutConfig {
     let default_config: ShortcutConfig = serde_json::from_value(json)
         .expect("Falha ao desserializar JSON de volta para ShortcutConfig.");
     
     let vscode_config = VsCodeShortcutConfig::from_default_shortcut(default_config);
 
-    let vscode_json = serde_json::to_value(vscode_config)
-        .expect("Falha ao serializar VsCodeShortcutConfig.");
-
-    vscode_json
+    vscode_config
 }
 
 pub fn vscode_to_default(json: Value) -> ShortcutConfig {
     let vscode_config: VsCodeShortcutConfig = serde_json::from_value(json)
         .expect("Falha ao desserializar JSON de volta para VsCodeShortcutConfig.");
 
-    vscode_config()
+    let default_config = ShortcutConfig::from_vscode_config(vscode_config);
+    default_config
 }

@@ -1,44 +1,11 @@
 use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Shortcut {
-    key: String,
-    value: String,
-    optional: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct ShortcutConfig {
-    pub key_bindings: Vec<Shortcut>,
-}
-
-impl Shortcut {
-    pub fn new(key: impl Into<String>, value: impl Into<String>, optional: Option<String>) -> Self {
-         Shortcut {
-             key: key.into(),
-             value: value.into(),
-             optional,
-        }
-    }
-}
-
-impl ShortcutConfig {
-    pub fn new() -> Self {
-        Self {
-            key_bindings: Vec::new(),
-        }
-    }
-    
-    pub fn add_shortcut(&mut self, shortcut: Shortcut){
-        self.key_bindings.push(shortcut);
-    }
-}
+use crate::shortcut::models::default::{Shortcut, ShortcutConfig};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct VsCodeShortcut {
-    key: String,
-    command: String,
-    when: Option<String>,
+    pub key: String,
+    pub command: String,
+    pub when: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -85,4 +52,3 @@ impl VsCodeShortcutConfig {
         }
     }
 }
-

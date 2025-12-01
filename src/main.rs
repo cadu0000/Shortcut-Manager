@@ -1,15 +1,12 @@
-use crate::shortcut::model::Shortcut;
-use crate::shortcut::model::ShortcutConfig;
-use crate::shortcut::service::export_to_vscode_type;
+use crate::shortcut::models::vscode::{VsCodeShortcut, VsCodeShortcutConfig};
+use crate::shortcut::service::default_to_vscode;
 use serde_json::Value;
 use crate::shortcut::service::generate_shortcut_config_json;
-
+use crate::shortcut::models::default::{Shortcut, ShortcutConfig};
 pub mod shortcut;
 pub mod ui;
 
 fn main() {
-    println!("Iniciando a geração de configuração de atalhos...");
-
     let shortcut_save = Shortcut::new(
         "Ctrl+S", 
         "save_document", 
@@ -46,9 +43,10 @@ fn main() {
         }
     }
     
-    let vscode_json: Value = export_to_vscode_type(json_output);
+    let vscode: VsCodeShortcutConfig = default_to_vscode(json_output);
+    
 
-    match serde_json::to_string_pretty(&vscode_json){
+    match serde_json::to_string_pretty(&generate_shortcut_config_json(vscode)){
         Ok(jsonn) => {
             println!("{}", jsonn);
         },
