@@ -1,4 +1,1 @@
-enum ErrorCode{
-    
-}
-
+enum ErrorCode {}
