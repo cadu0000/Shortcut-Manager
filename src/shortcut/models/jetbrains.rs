@@ -1,5 +1,8 @@
+use std::vec;
+
 use serde::{Deserialize, Serialize};
 
+use crate::ShortcutConfig;
 use crate::shortcut::models::default::Shortcut;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -58,6 +61,14 @@ impl JetBrainsAction {
             mouse_shortcuts: mouse_shortcuts,
         }
     }
+
+    pub fn from_default(shortcut: &Shortcut) -> Self {
+        JetBrainsAction {
+            id: shortcut.action.clone(),
+            keyboard_shortcuts: vec![KeyboardShortcut::from_default(shortcut.clone())],
+            mouse_shortcuts: vec![MouseShortcut::from_default(shortcut.clone())],
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -89,7 +100,11 @@ impl KeyboardShortcut {
         KeyboardShortcut {
             first_keystroke: shortcut.keystroke,
             second_keystroke: shortcut.sequence.map(|sk| sk.into()),
-            remove: shortcut.is_removal.into(),
+            remove: if shortcut.is_removal {
+                Some(true)
+            } else {
+                None
+            },
         }
     }
 }
@@ -114,7 +129,11 @@ impl MouseShortcut {
     pub fn from_default(shortcut: Shortcut) -> Self {
         MouseShortcut {
             keystroke: shortcut.keystroke,
-            remove: shortcut.is_removal.into(),
+            remove: if shortcut.is_removal {
+                Some(true)
+            } else {
+                None
+            },
         }
     }
 }
