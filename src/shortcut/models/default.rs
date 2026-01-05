@@ -2,6 +2,7 @@ use crate::shortcut::models::ide::IDE;
 use quick_xml::events::Event; 
 use crate::shortcut::models::vscode::{VsCodeShortcut, VsCodeShortcutConfig};
 use quick_xml::reader::Reader;
+use crate::shortcut::input_device::InputDevice;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::io::BufRead;
@@ -13,6 +14,7 @@ pub struct Shortcut {
     pub context: Option<String>,
     pub sequence: Option<String>,
     pub is_removal: bool,
+    pub device: InputDevice,
 }
 
 impl Shortcut {
@@ -27,6 +29,7 @@ impl Shortcut {
         keystroke: impl Into<String>,
         action: impl Into<String>,
         context: Option<String>,
+        device: InputDevice,
     ) -> Self {
         Shortcut {
             keystroke: keystroke.into(),
@@ -34,6 +37,7 @@ impl Shortcut {
             context,
             sequence: None,
             is_removal: false,
+            device,
         }
     }
 
@@ -44,6 +48,7 @@ impl Shortcut {
             context: s.when,
             sequence: None,
             is_removal: false,
+            device: InputDevice::Keyboard,
         }
     }
 

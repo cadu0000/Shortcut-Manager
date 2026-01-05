@@ -1,9 +1,6 @@
-use std::vec;
-
 use serde::{Deserialize, Serialize};
-
-use crate::ShortcutConfig;
 use crate::shortcut::models::default::Shortcut;
+use crate::shortcut::input_device::InputDevice;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "keymap")]
@@ -50,26 +47,31 @@ pub struct JetBrainsAction {
 }
 
 impl JetBrainsAction {
-    pub fn new(
-        id: String, //aqui eh a actionn
-        keyboard_shortcuts: Vec<KeyboardShortcut>,
-        mouse_shortcuts: Vec<MouseShortcut>,
-    ) -> Self {
-        JetBrainsAction {
-            id,
-            keyboard_shortcuts: keyboard_shortcuts,
-            mouse_shortcuts: mouse_shortcuts,
-        }
-    }
-
     pub fn from_default(shortcut: Shortcut) -> Self {
+        let mut keyboard_shortcuts = Vec::new();
+        let mut mouse_shortcuts = Vec::new();
+
+        match shortcut.device {
+            InputDevice::Keyboard => {
+                keyboard_shortcuts.push(
+                    KeyboardShortcut::from_default(shortcut.clone())
+                );
+            }
+            InputDevice::Mouse => {
+                mouse_shortcuts.push(
+                    MouseShortcut::from_default(shortcut.clone())
+                );
+            }
+        }
+
         JetBrainsAction {
-            id: shortcut.action.clone(),
-            keyboard_shortcuts: vec![KeyboardShortcut::from_default(shortcut.clone())],
-            mouse_shortcuts: vec![MouseShortcut::from_default(shortcut.clone())],
+            id: shortcut.action,
+            keyboard_shortcuts,
+            mouse_shortcuts,
         }
     }
 }
+
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct KeyboardShortcut {
