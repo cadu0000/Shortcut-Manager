@@ -62,7 +62,7 @@ impl JetBrainsAction {
         }
     }
 
-    pub fn from_default(shortcut: &Shortcut) -> Self {
+    pub fn from_default(shortcut: Shortcut) -> Self {
         JetBrainsAction {
             id: shortcut.action.clone(),
             keyboard_shortcuts: vec![KeyboardShortcut::from_default(shortcut.clone())],
