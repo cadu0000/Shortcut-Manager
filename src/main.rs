@@ -1,14 +1,18 @@
-use crate::shortcut::models::default::{Shortcut, ShortcutConfig};
-use crate::shortcut::models::vscode::VsCodeShortcutConfig;
-use crate::shortcut::service::{
+use crate::models::default::{Shortcut, ShortcutConfig};
+use crate::models::vscode::VsCodeShortcutConfig;
+use crate::services::service::{
     default_to_vscode, generate_shortcut_config_json, default_to_jetbrains
 };
-use crate::shortcut::input_device::InputDevice;
+use crate::enums::input_device::InputDevice;
+use crate::ui::render_cli::run;
 
-pub mod shortcut;
+pub mod models;
 pub mod ui;
+pub mod enums;
+pub mod services;
 
 fn main() {
+    run();
     let shortcut_save = Shortcut::new("Ctrl+S", "save_document", None, InputDevice::Keyboard);
 
     let shortcut_reload = Shortcut::new("F5", "refresh_view", Some("browser".to_string()), InputDevice::Keyboard);

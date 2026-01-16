@@ -1,6 +1,6 @@
-use crate::shortcut::models::default::ShortcutConfig;
-use crate::shortcut::models::jetbrains::{JetBrainsAction, JetBrainsKeymap};
-use crate::shortcut::models::vscode::VsCodeShortcutConfig;
+use crate::models::default::ShortcutConfig;
+use crate::models::jetbrains::{JetBrainsAction, JetBrainsKeymap};
+use crate::models::vscode::VsCodeShortcutConfig;
 use quick_xml::reader::Reader;
 use serde::Serialize;
 use serde_json::Value;

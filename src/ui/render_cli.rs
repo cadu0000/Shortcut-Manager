@@ -1,7 +1,7 @@
 use inquire::{Select, error::InquireError};
 use crate::enums::ide::IDE;
 
-pub fn render_cli () {
+pub fn run () {
     let options = vec![
         IDE::VSCode,
         IDE::JetBrains,

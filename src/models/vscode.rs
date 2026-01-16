@@ -1,4 +1,4 @@
-use crate::shortcut::models::default::{Shortcut, ShortcutConfig};
+use crate::models::default::{Shortcut, ShortcutConfig};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

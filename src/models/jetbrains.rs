@@ -1,6 +1,6 @@
+use crate::enums::input_device::InputDevice;
+use crate::models::default::Shortcut;
 use serde::{Deserialize, Serialize};
-use crate::shortcut::models::default::Shortcut;
-use crate::shortcut::input_device::InputDevice;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "keymap")]
@@ -53,14 +53,10 @@ impl JetBrainsAction {
 
         match shortcut.device {
             InputDevice::Keyboard => {
-                keyboard_shortcuts.push(
-                    KeyboardShortcut::from_default(shortcut.clone())
-                );
+                keyboard_shortcuts.push(KeyboardShortcut::from_default(shortcut.clone()));
             }
             InputDevice::Mouse => {
-                mouse_shortcuts.push(
-                    MouseShortcut::from_default(shortcut.clone())
-                );
+                mouse_shortcuts.push(MouseShortcut::from_default(shortcut.clone()));
             }
         }
 
@@ -71,7 +67,6 @@ impl JetBrainsAction {
         }
     }
 }
-
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct KeyboardShortcut {

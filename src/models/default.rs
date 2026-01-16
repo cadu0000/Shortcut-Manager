@@ -1,8 +1,8 @@
-use crate::shortcut::models::ide::IDE;
+use crate::enums::ide::IDE;
 use quick_xml::events::Event; 
-use crate::shortcut::models::vscode::{VsCodeShortcut, VsCodeShortcutConfig};
+use crate::models::vscode::{VsCodeShortcut, VsCodeShortcutConfig};
 use quick_xml::reader::Reader;
-use crate::shortcut::input_device::InputDevice;
+use crate::enums::InputDevice;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::io::BufRead;
@@ -102,7 +102,6 @@ impl ShortcutConfig {
 
     pub fn from_jetbrains_reader<R: BufRead>(reader: &mut Reader<R>) -> Self {
         let config = ShortcutConfig::new();
-
         let mut buf = Vec::new();
 
         loop {
