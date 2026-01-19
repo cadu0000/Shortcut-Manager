@@ -2,7 +2,7 @@ use crate::enums::ide::IDE;
 use quick_xml::events::Event; 
 use crate::models::vscode::{VsCodeShortcut, VsCodeShortcutConfig};
 use quick_xml::reader::Reader;
-use crate::enums::InputDevice;
+use crate::InputDevice;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::io::BufRead;

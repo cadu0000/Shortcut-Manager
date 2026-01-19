@@ -9,6 +9,7 @@ pub struct VsCodeShortcut {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(transparent)]
 pub struct VsCodeShortcutConfig {
     pub key_bindings: Vec<VsCodeShortcut>,
 }
