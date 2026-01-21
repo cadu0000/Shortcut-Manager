@@ -1,17 +1,17 @@
+use crate::enums::input_device::InputDevice;
+use crate::models::default::Shortcut;
 use serde::{Deserialize, Serialize};
-use crate::shortcut::models::default::Shortcut;
-use crate::shortcut::input_device::InputDevice;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "keymap")]
 pub struct JetBrainsKeymap {
-    #[serde(rename = "version", default)]
+    #[serde(rename = "@version", skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 
-    #[serde(rename = "name")]
+    #[serde(rename = "@name")]
     pub name: String,
 
-    #[serde(rename = "parent", default)]
+    #[serde(rename = "@parent", skip_serializing_if = "Option::is_none")]
     pub parent: Option<String>,
 
     #[serde(rename = "action", default)]
@@ -36,7 +36,7 @@ impl JetBrainsKeymap {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JetBrainsAction {
-    #[serde(rename = "id")]
+    #[serde(rename = "@id")]
     pub id: String,
 
     #[serde(rename = "keyboard-shortcut", default)]
@@ -53,36 +53,31 @@ impl JetBrainsAction {
 
         match shortcut.device {
             InputDevice::Keyboard => {
-                keyboard_shortcuts.push(
-                    KeyboardShortcut::from_default(shortcut.clone())
-                );
+                keyboard_shortcuts.push(KeyboardShortcut::from_default(shortcut.clone()));
             }
             InputDevice::Mouse => {
-                mouse_shortcuts.push(
-                    MouseShortcut::from_default(shortcut.clone())
-                );
+                mouse_shortcuts.push(MouseShortcut::from_default(shortcut.clone()));
             }
         }
 
         JetBrainsAction {
-            id: shortcut.action,
+            id: shortcut.action, 
             keyboard_shortcuts,
             mouse_shortcuts,
         }
     }
 }
 
-
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct KeyboardShortcut {
-    #[serde(rename = "first-keystroke")]
+    #[serde(rename = "@first-keystroke")]
     pub first_keystroke: String,
 
-    #[serde(rename = "second-keystroke", default)]
+    #[serde(rename = "@second-keystroke", skip_serializing_if = "Option::is_none")]
     pub second_keystroke: Option<String>,
 
-    #[serde(rename = "remove", default)]
-    pub remove: Option<bool>,
+    #[serde(skip)] 
+    pub remove: Option<bool>, 
 }
 
 impl KeyboardShortcut {
@@ -94,29 +89,26 @@ impl KeyboardShortcut {
         KeyboardShortcut {
             first_keystroke: first_keystroke.into(),
             second_keystroke: second_keystroke.map(|sk| sk.into()),
-            remove: remove,
+            remove,
         }
     }
 
     pub fn from_default(shortcut: Shortcut) -> Self {
         KeyboardShortcut {
             first_keystroke: shortcut.keystroke,
-            second_keystroke: shortcut.sequence.map(|sk| sk.into()),
-            remove: if shortcut.is_removal {
-                Some(true)
-            } else {
-                None
-            },
+            second_keystroke: shortcut.sequence,
+            remove: if shortcut.is_removal { Some(true) } else { None },
         }
     }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct MouseShortcut {
-    #[serde(rename = "keystroke")]
+
+    #[serde(rename = "@keystroke")]
     pub keystroke: String,
 
-    #[serde(rename = "remove", default)]
+    #[serde(skip)]
     pub remove: Option<bool>,
 }
 
@@ -131,11 +123,7 @@ impl MouseShortcut {
     pub fn from_default(shortcut: Shortcut) -> Self {
         MouseShortcut {
             keystroke: shortcut.keystroke,
-            remove: if shortcut.is_removal {
-                Some(true)
-            } else {
-                None
-            },
+            remove: if shortcut.is_removal { Some(true) } else { None },
         }
     }
 }
